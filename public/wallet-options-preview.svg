@@ -1,0 +1,46 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="140" y1="80" x2="1020" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#050913"/>
+    </linearGradient>
+    <linearGradient id="card" x1="240" y1="180" x2="900" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1F2937"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="270" y1="520" x2="920" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" rx="32" fill="url(#bg)"/>
+  <circle cx="180" cy="120" r="160" fill="#F59E0B" opacity="0.12"/>
+  <circle cx="1040" cy="560" r="180" fill="#38BDF8" opacity="0.12"/>
+  <rect x="130" y="90" width="940" height="520" rx="28" fill="url(#card)" stroke="rgba(191,209,233,0.24)"/>
+  <text x="188" y="170" fill="#FBBF24" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">STELLAR LEVEL 2</text>
+  <text x="188" y="240" fill="#F8FAFC" font-size="54" font-family="Arial, sans-serif" font-weight="700">LivePoll Testnet Control Room</text>
+  <text x="188" y="286" fill="#BFD1E9" font-size="24" font-family="Arial, sans-serif">
+    Multi-wallet voting, contract-backed poll storage, and real-time event sync.
+  </text>
+  <rect x="188" y="334" width="220" height="52" rx="16" fill="url(#accent)"/>
+  <text x="230" y="367" fill="#FFFFFF" font-size="22" font-family="Arial, sans-serif" font-weight="700">Connect wallet</text>
+  <text x="188" y="442" fill="#7DD3FC" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="2">WALLET OPTIONS AVAILABLE</text>
+  <g font-family="Arial, sans-serif" font-size="22" font-weight="700">
+    <rect x="188" y="474" width="120" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="222" y="503" fill="#F8FAFC">xBull</text>
+    <rect x="326" y="474" width="150" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="359" y="503" fill="#F8FAFC">Freighter</text>
+    <rect x="494" y="474" width="130" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="529" y="503" fill="#F8FAFC">Albedo</text>
+    <rect x="642" y="474" width="120" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="681" y="503" fill="#F8FAFC">Rabet</text>
+    <rect x="780" y="474" width="130" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="816" y="503" fill="#F8FAFC">Lobstr</text>
+    <rect x="188" y="538" width="112" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="225" y="567" fill="#F8FAFC">Hana</text>
+    <rect x="318" y="538" width="160" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="349" y="567" fill="#F8FAFC">Hot Wallet</text>
+    <rect x="496" y="538" width="128" height="46" rx="23" fill="#111827" stroke="#334155"/>
+    <text x="532" y="567" fill="#F8FAFC">Klever</text>
+  </g>
+</svg>
