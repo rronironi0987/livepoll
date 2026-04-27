@@ -1,16 +1,42 @@
-# React + Vite
+# LivePoll
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+LivePoll is a Stellar testnet polling dapp with a React frontend and a Soroban smart contract backend.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `src/` contains the frontend app
+- `poll_contract/` contains the Soroban smart contract
+- `scripts/` contains deployment helpers
 
-## React Compiler
+## Docs
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Frontend guide: [FRONTEND.md](./FRONTEND.md)
+- Contract guide: [poll_contract/README.md](./poll_contract/README.md)
 
-## Expanding the ESLint configuration
+## Quick Start
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Build the contract:
+
+```bash
+npm run contract:build
+```
+
+3. Start the frontend:
+
+```bash
+npm run dev
+```
+
+## Scripts
+
+- `npm run dev` starts the Vite frontend
+- `npm run build` creates a production frontend build
+- `npm run lint` runs ESLint
+- `npm run contract:build` builds the Soroban contract
+- `npm run contract:deploy` uploads and deploys the contract
