@@ -49,13 +49,13 @@ Wallet options available:
 ## Deployed Contract
 
 - Network: `Stellar Testnet`
-- Contract address: `CBGJGJOFFSY5KK7DHFENNBGASXROVG5GEW2MISGJ2N2F7VLHCCUJ42UA`
-- Contract explorer: https://stellar.expert/explorer/testnet/contract/CBGJGJOFFSY5KK7DHFENNBGASXROVG5GEW2MISGJ2N2F7VLHCCUJ42UA
+- Contract address: `CBSQPHRXSCC7ZHYP3VRDMGM3J3YLDXOZPLPLFVQTN5XKBT4NJWDCY772`
+- Contract explorer: https://stellar.expert/explorer/testnet/contract/CBSQPHRXSCC7ZHYP3VRDMGM3J3YLDXOZPLPLFVQTN5XKBT4NJWDCY772
 
 ## Verifiable Contract Call
 
-- Transaction hash: `282d8793c1968e02b32d6d23d688b930a01c316056c908acfd6b685b8089f67e`
-- Stellar Expert link: https://stellar.expert/explorer/testnet/tx/282d8793c1968e02b32d6d23d688b930a01c316056c908acfd6b685b8089f67e
+- Transaction hash: `842cfc9bc29f79898735966c9fe2080c1a439461ac20254d83a335a7eab8359e`
+- Stellar Expert link: https://stellar.expert/explorer/testnet/tx/842cfc9bc29f79898735966c9fe2080c1a439461ac20254d83a335a7eab8359e
 
 ## Live Demo
 
@@ -116,7 +116,7 @@ For submission, include a screenshot of the terminal output showing **3+ tests p
 ```env
 VITE_STELLAR_RPC_URL=https://soroban-testnet.stellar.org
 VITE_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
-VITE_STELLAR_CONTRACT_ID=CBGJGJOFFSY5KK7DHFENNBGASXROVG5GEW2MISGJ2N2F7VLHCCUJ42UA
+VITE_STELLAR_CONTRACT_ID=CBSQPHRXSCC7ZHYP3VRDMGM3J3YLDXOZPLPLFVQTN5XKBT4NJWDCY772
 VITE_STELLAR_READ_ACCOUNT=
 VITE_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
 VITE_POLL_CONTRACT_WASM_URL=/contracts/poll_contract.wasm
