@@ -73,19 +73,25 @@ npm install
 npm run contract:build
 ```
 
-3. Optionally create a local env file:
+3. Sync the compiled contract WASM into the frontend (used to load the contract spec/ABI at runtime):
+
+```bash
+npm run wasm:sync
+```
+
+4. Optionally create a local env file:
 
 ```powershell
 Copy-Item .env.example .env.local
 ```
 
-4. Start the frontend:
+5. Start the frontend:
 
 ```bash
 npm run dev
 ```
 
-5. Build for production:
+6. Build for production:
 
 ```bash
 npm run build
@@ -109,6 +115,7 @@ VITE_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
 VITE_STELLAR_CONTRACT_ID=CBGJGJOFFSY5KK7DHFENNBGASXROVG5GEW2MISGJ2N2F7VLHCCUJ42UA
 VITE_STELLAR_READ_ACCOUNT=
 VITE_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
+VITE_POLL_CONTRACT_WASM_URL=/contracts/poll_contract.wasm
 ```
 
 ## Testnet Notes
@@ -124,6 +131,7 @@ VITE_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
 - `npm run lint` runs ESLint
 - `npm test` runs the Node.js test suite
 - `npm run contract:build` builds the Soroban contract
+- `npm run wasm:sync` copies the compiled WASM into `public/contracts/` for the frontend to load the contract spec
 - `npm run contract:deploy` uploads and deploys the contract to testnet
 
 ## Deploy (Vercel / Netlify)

@@ -19,7 +19,9 @@ import {
   getAddress as getFreighterAddress,
   requestAccess as requestFreighterAccess,
 } from '@stellar/freighter-api'
-import pollContractWasmUrl from '../../poll_contract/target/wasm32v1-none/release/poll_contract.wasm?url'
+
+const pollContractWasmUrl =
+  import.meta.env.VITE_POLL_CONTRACT_WASM_URL || '/contracts/poll_contract.wasm'
 
 if (!globalThis.Buffer) {
   globalThis.Buffer = Buffer
