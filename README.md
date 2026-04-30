@@ -42,11 +42,9 @@ Website preview:
 
 <img width="1901" height="870" alt="Screenshot 2026-04-30 190440" src="https://github.com/user-attachments/assets/584d4683-176b-4855-9304-9e48ac8ab31c" />
 
-
 Wallet options available:
 
 <img width="1898" height="868" alt="Screenshot 2026-04-30 191011" src="https://github.com/user-attachments/assets/900a0e91-73c4-46bf-8ab0-7a292e429c00" />
-
 
 ## Deployed Contract
 
