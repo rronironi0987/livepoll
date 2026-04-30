@@ -143,10 +143,10 @@
 .notice {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--panel-border);
   border-radius: 1.8rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(255, 249, 242, 0.88)),
+    linear-gradient(180deg, var(--panel-bg-top), var(--panel-bg-bottom)),
     var(--surface);
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(18px);
@@ -158,8 +158,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.66), transparent 36%),
-    linear-gradient(180deg, rgba(219, 106, 78, 0.08), transparent 30%);
+    linear-gradient(120deg, var(--panel-before-top), transparent 36%),
+    linear-gradient(180deg, var(--panel-before-accent), transparent 30%);
   pointer-events: none;
 }
 
@@ -240,7 +240,7 @@
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  color: #132c35;
+  color: var(--heading-strong);
 }
 
 .hero-card p,
@@ -276,18 +276,18 @@
 }
 
 .wallet-chip {
-  border: 1px solid rgba(219, 106, 78, 0.16);
-  background: rgba(255, 255, 255, 0.68);
-  color: #264450;
-  box-shadow: 0 10px 24px rgba(96, 80, 56, 0.08);
+  border: 1px solid var(--chip-border);
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  box-shadow: var(--chip-shadow);
 }
 
 .network-pill,
 .time-pill,
 .panel-meta {
-  border: 1px solid rgba(20, 54, 66, 0.09);
-  background: rgba(255, 255, 255, 0.62);
-  color: #24414a;
+  border: 1px solid var(--pill-border);
+  background: var(--pill-bg);
+  color: var(--pill-text);
 }
 
 .network-pill {
@@ -428,7 +428,7 @@
 
 .inline-link {
   width: fit-content;
-  color: #286376;
+  color: var(--link-color);
   font-weight: 800;
   text-decoration: none;
 }
@@ -450,7 +450,7 @@
   font-size: clamp(2.2rem, 4vw, 3.3rem);
   font-weight: 700;
   letter-spacing: -0.07em;
-  color: #13313c;
+  color: var(--heading-strong);
 }
 
 .field {
@@ -462,7 +462,7 @@
 .field span {
   font-size: 0.9rem;
   font-weight: 800;
-  color: #1d414c;
+  color: var(--field-label);
 }
 
 .field textarea,
@@ -470,12 +470,12 @@
 .control-strip input,
 .control-strip select {
   width: 100%;
-  border: 1px solid rgba(20, 54, 66, 0.12);
+  border: 1px solid var(--input-border);
   border-radius: 1.1rem;
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--input-bg);
   color: var(--text-main);
   font: inherit;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: var(--input-shadow);
   transition:
     border-color 180ms ease,
     transform 180ms ease,
@@ -499,9 +499,9 @@
 .control-strip input:focus,
 .control-strip select:focus {
   outline: none;
-  border-color: rgba(219, 106, 78, 0.34);
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 0 0 0.28rem rgba(219, 106, 78, 0.1);
+  border-color: var(--input-border-focus);
+  background: var(--input-bg-focus);
+  box-shadow: var(--input-shadow-focus);
   transform: translateY(-1px);
 }
 
@@ -525,8 +525,8 @@
 }
 
 .duration-pill {
-  border: 1px solid rgba(20, 54, 66, 0.12);
-  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--duration-pill-border);
+  background: var(--duration-pill-bg);
   color: var(--text-soft);
 }
 
@@ -575,10 +575,10 @@
 }
 
 .secondary-button {
-  color: #1a3942;
-  background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(20, 54, 66, 0.1);
-  box-shadow: 0 10px 22px rgba(74, 60, 43, 0.08);
+  color: var(--secondary-button-text);
+  background: var(--secondary-button-bg);
+  border-color: var(--secondary-button-border);
+  box-shadow: var(--secondary-button-shadow);
 }
 
 .secondary-button.danger {
@@ -616,8 +616,30 @@
 }
 
 .wallet-disconnect-address {
-  color: #1e3b44;
+  color: var(--text-main);
   font-size: 0.96rem;
+}
+
+.theme-toggle {
+  gap: 0.55rem;
+  padding-inline: 0.95rem;
+}
+
+.theme-toggle svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+:root[data-theme='dark'] .hero-card {
+  background:
+    radial-gradient(circle at top right, rgba(219, 106, 78, 0.18), transparent 28%),
+    linear-gradient(160deg, rgba(10, 15, 20, 0.92), rgba(16, 25, 33, 0.78));
+}
+
+:root[data-theme='dark'] .stat-card {
+  background:
+    linear-gradient(180deg, rgba(14, 22, 28, 0.72), rgba(10, 15, 20, 0.82)),
+    var(--surface-strong);
 }
 
 .disconnect-icon {

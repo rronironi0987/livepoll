@@ -30,6 +30,67 @@ const EMPTY_FORM = {
 }
 
 const DURATION_PRESETS = [5, 15, 30, 60, 180, 1440]
+const THEME_STORAGE_KEY = 'livepoll-theme'
+
+function getInitialTheme() {
+  if (typeof window === 'undefined') {
+    return 'light'
+  }
+
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
+    if (stored === 'light' || stored === 'dark') {
+      return stored
+    }
+  } catch {
+    // Ignore storage failures.
+  }
+
+  if (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches) {
+    return 'dark'
+  }
+
+  return 'light'
+}
+
+function applyTheme(theme) {
+  if (typeof document === 'undefined') {
+    return
+  }
+
+  document.documentElement.dataset.theme = theme
+
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
+  } catch {
+    // Ignore storage failures.
+  }
+}
+
+function ThemeIcon({ theme }) {
+  if (theme === 'dark') {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+        <path
+          d="M21 12.8a7.7 7.7 0 0 1-10.6-10A8.9 8.9 0 1 0 21 12.8Z"
+          fill="currentColor"
+        />
+      </svg>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+      <path
+        d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0-16v2m0 16v2m10-10h-2M4 12H2m16.95 6.95-1.41-1.41M6.46 6.46 5.05 5.05m13.9 0-1.41 1.41M6.46 17.54l-1.41 1.41"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
 
 function shortenAddress(address) {
   if (!address) {
@@ -261,6 +322,7 @@ function classifyError(error) {
 }
 
 function App() {
+  const [theme, setTheme] = useState(getInitialTheme)
   const [wallet, setWallet] = useState(null)
   const [polls, setPolls] = useState(() => readCachedPolls())
   const [voteLookup, setVoteLookup] = useState({})
@@ -283,6 +345,10 @@ function App() {
   const refreshPollStateRef = useRef(null)
   const syncFromEventsRef = useRef(null)
   const deferredSearch = useDeferredValue(searchQuery)
+
+  useEffect(() => {
+    applyTheme(theme)
+  }, [theme])
 
   const selectedPoll = useMemo(
     () => polls.find((poll) => poll.id === selectedPollId) || null,
@@ -710,6 +776,17 @@ function App() {
             <span className="status-dot" />
             {NETWORK_PASSPHRASE === 'Test SDF Network ; September 2015' ? 'Testnet' : 'Custom network'}
           </div>
+
+          <button
+            className="secondary-button theme-toggle"
+            onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+            type="button"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+          >
+            <ThemeIcon theme={theme} />
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
 
           {wallet ? (
             <button
