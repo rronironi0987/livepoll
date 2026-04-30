@@ -17,6 +17,7 @@ import {
 } from '@creit.tech/stellar-wallets-kit'
 import {
   getAddress as getFreighterAddress,
+  isConnected as isFreighterConnected,
   requestAccess as requestFreighterAccess,
 } from '@stellar/freighter-api'
 
@@ -339,32 +340,78 @@ export async function fetchContractEvents(cursor) {
 }
 
 export async function connectWallet() {
+  async function connectFreighter() {
+    walletKit.setWallet(FREIGHTER_ID)
+    const accessResponse = await requestFreighterAccess()
+    if (accessResponse.error) {
+      throw accessResponse.error
+    }
+
+    let address = accessResponse.address
+
+    if (!address) {
+      const freighterAddressResponse = await getFreighterAddress()
+      if (freighterAddressResponse.error) {
+        throw freighterAddressResponse.error
+      }
+
+      address = freighterAddressResponse.address
+    }
+
+    if (!address) {
+      throw new Error('Freighter did not return a public address.')
+    }
+
+    return {
+      address,
+      walletId: FREIGHTER_ID,
+      walletName: 'Freighter',
+    }
+  }
+
+  async function probeFreighter({ attempts = 3, delayMs = 350, timeoutMs = 900 } = {}) {
+    for (let attempt = 0; attempt < attempts; attempt += 1) {
+      try {
+        const result = await Promise.race([
+          isFreighterConnected(),
+          new Promise((resolve) => window.setTimeout(() => resolve({ timeout: true }), timeoutMs)),
+        ])
+
+        if (result?.timeout) {
+          // Extension injection can lag behind initial app boot.
+        } else if (!result?.error) {
+          return true
+        }
+      } catch {
+        // Ignore probe failures and fall back to the wallet kit modal.
+      }
+
+      if (attempt < attempts - 1) {
+        await new Promise((resolve) => window.setTimeout(resolve, delayMs))
+      }
+    }
+
+    return false
+  }
+
+  if (await probeFreighter()) {
+    return connectFreighter()
+  }
+
   return new Promise((resolve, reject) => {
     walletKit
       .openModal({
         modalTitle: 'Choose a Stellar wallet',
-        notAvailableText: 'Install a Stellar wallet to create and vote on-chain.',
+        notAvailableText:
+          'No wallets detected. If you already installed Freighter or another wallet, refresh this page and make sure the extension is enabled for this site.',
         onWalletSelected: async (walletOption) => {
           try {
             walletKit.setWallet(walletOption.id)
             let address = ''
 
             if (walletOption.id === FREIGHTER_ID) {
-              const accessResponse = await requestFreighterAccess()
-              if (accessResponse.error) {
-                throw accessResponse.error
-              }
-
-              address = accessResponse.address
-
-              if (!address) {
-                const freighterAddressResponse = await getFreighterAddress()
-                if (freighterAddressResponse.error) {
-                  throw freighterAddressResponse.error
-                }
-
-                address = freighterAddressResponse.address
-              }
+              const connected = await connectFreighter()
+              address = connected.address
             } else {
               const response = await walletKit.getAddress()
               address = response.address
