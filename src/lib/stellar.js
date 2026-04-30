@@ -17,7 +17,6 @@ import {
 } from '@creit.tech/stellar-wallets-kit'
 import {
   getAddress as getFreighterAddress,
-  isConnected as isFreighterConnected,
   requestAccess as requestFreighterAccess,
 } from '@stellar/freighter-api'
 
@@ -53,9 +52,37 @@ export const SUPPORTED_WALLET_NAMES = [
 
 export const server = new rpc.Server(RPC_URL)
 
+const walletModules = allowAllModules()
+const freighterModule = walletModules.find((module) => module.productId === FREIGHTER_ID)
+
+if (freighterModule && typeof freighterModule.isAvailable === 'function') {
+  const originalIsAvailable = freighterModule.isAvailable.bind(freighterModule)
+
+  freighterModule.isAvailable = async () => {
+    try {
+      if (typeof window !== 'undefined' && window.freighter) {
+        return true
+      }
+    } catch {
+      // Ignore access failures.
+    }
+
+    try {
+      const result = await Promise.race([
+        originalIsAvailable(),
+        new Promise((resolve) => window.setTimeout(() => resolve(false), 450)),
+      ])
+
+      return Boolean(result)
+    } catch {
+      return false
+    }
+  }
+}
+
 export const walletKit = new StellarWalletsKit({
   network: WalletNetwork.TESTNET,
-  modules: allowAllModules(),
+  modules: walletModules,
 })
 
 let specPromise
@@ -367,35 +394,6 @@ export async function connectWallet() {
       walletId: FREIGHTER_ID,
       walletName: 'Freighter',
     }
-  }
-
-  async function probeFreighter({ attempts = 3, delayMs = 350, timeoutMs = 900 } = {}) {
-    for (let attempt = 0; attempt < attempts; attempt += 1) {
-      try {
-        const result = await Promise.race([
-          isFreighterConnected(),
-          new Promise((resolve) => window.setTimeout(() => resolve({ timeout: true }), timeoutMs)),
-        ])
-
-        if (result?.timeout) {
-          // Extension injection can lag behind initial app boot.
-        } else if (!result?.error) {
-          return true
-        }
-      } catch {
-        // Ignore probe failures and fall back to the wallet kit modal.
-      }
-
-      if (attempt < attempts - 1) {
-        await new Promise((resolve) => window.setTimeout(resolve, delayMs))
-      }
-    }
-
-    return false
-  }
-
-  if (await probeFreighter()) {
-    return connectFreighter()
   }
 
   return new Promise((resolve, reject) => {
