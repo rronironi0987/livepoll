@@ -4,10 +4,10 @@ LivePoll is a mini end-to-end Stellar + Soroban dApp: a multi-wallet polling app
 
 ## Level 3 Submission Checklist (fill before submitting)
 
-- Live demo link: `https://livepoll-njy1ayhqq-sagar522290s-projects.vercel.app/`
+- Live demo link: `TODO: Deploy your app to Vercel, Netlify, or similar and add the link here`
 - Demo video (1 minute) link: TODO
 - Test output screenshot (3+ passing tests): ✅ (see below)
-- Public GitHub repo link: `https://github.com/Sagar522290/livepoll.git`
+- Public GitHub repo link: `https://github.com/rronironi0987/livepoll.git`
 - 3+ meaningful commits for Level 3: ✅
 
 ## Test Output (Screenshot)
@@ -176,7 +176,7 @@ Suggested recording flow:
 
 ## Submission Notes
 
-- GitHub repository: `https://github.com/Sagar522290/livepoll.git`
+- GitHub repository: `https://github.com/rronironi0987/livepoll.git`
 - The project includes multiple meaningful commits in git history
 - The contract is deployed on testnet and called from the frontend
 - Real-time event integration and visible transaction status are implemented
