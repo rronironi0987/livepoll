@@ -20,6 +20,8 @@ import {
   submitContractTransaction,
   SUPPORTED_WALLET_NAMES,
 } from './lib/stellar'
+import { readCachedPolls, removeCachedPoll, writeCachedPolls } from './lib/pollCache'
+import { getPollState, mergeRecentEvents, parsePollHash } from './lib/pollLogic'
 
 const EMPTY_FORM = {
   question: '',
@@ -28,39 +30,6 @@ const EMPTY_FORM = {
 }
 
 const DURATION_PRESETS = [5, 15, 30, 60, 180, 1440]
-const POLL_CACHE_STORAGE_KEY = 'livepoll_cached_polls'
-
-function readCachedPolls() {
-  try {
-    const cached = window.localStorage.getItem(POLL_CACHE_STORAGE_KEY)
-    if (!cached) {
-      return []
-    }
-
-    const parsed = JSON.parse(cached)
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
-  }
-}
-
-function writeCachedPolls(polls) {
-  try {
-    if (!polls.length) {
-      window.localStorage.removeItem(POLL_CACHE_STORAGE_KEY)
-      return
-    }
-
-    window.localStorage.setItem(POLL_CACHE_STORAGE_KEY, JSON.stringify(polls))
-  } catch {
-    // Cache writes are best effort only.
-  }
-}
-
-function removeCachedPoll(pollId) {
-  const remainingPolls = readCachedPolls().filter((poll) => poll.id !== pollId)
-  writeCachedPolls(remainingPolls)
-}
 
 function shortenAddress(address) {
   if (!address) {
@@ -113,10 +82,6 @@ function formatTimeLeft(expiresAt) {
   }
 
   return `${minutes}m left`
-}
-
-function getPollState(poll) {
-  return Date.now() > poll.expiresAt || !poll.active ? 'closed' : 'active'
 }
 
 function getVoteActionState({ poll, walletAddress, hasVoted, transactionPhase, isWalletBusy }) {
@@ -193,20 +158,6 @@ function normalizeAddress(address) {
 
 function isPollOwner(poll, walletAddress) {
   return normalizeAddress(walletAddress) !== '' && normalizeAddress(walletAddress) === normalizeAddress(poll?.creator)
-}
-
-function parsePollHash(hashValue) {
-  const match = /^#poll-(\d+)$/.exec(hashValue || '')
-  return match ? Number(match[1]) : null
-}
-
-function mergeRecentEvents(currentEvents, nextEvents) {
-  const merged = [...nextEvents, ...currentEvents]
-  const uniqueEvents = merged.filter(
-    (event, index) => merged.findIndex((candidate) => candidate.id === event.id) === index,
-  )
-
-  return uniqueEvents.slice(0, 8)
 }
 
 function getTransactionCopy(transaction) {
