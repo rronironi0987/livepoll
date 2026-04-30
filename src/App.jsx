@@ -76,7 +76,11 @@ function applyTheme(theme) {
     return
   }
 
-  document.documentElement.dataset.theme = theme
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark')
+  } else {
+    document.documentElement.removeAttribute('data-theme')
+  }
 
   try {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme)
@@ -834,7 +838,12 @@ function App() {
 
           <button
             className="secondary-button theme-toggle"
-            onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+            onClick={() =>
+              setTheme((current) => {
+                const nextTheme = current === 'dark' ? 'light' : 'dark'
+                applyTheme(nextTheme)
+                return nextTheme
+              })}
             type="button"
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
             title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
