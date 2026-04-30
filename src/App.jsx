@@ -30,6 +30,7 @@ const EMPTY_FORM = {
 }
 
 const DURATION_PRESETS = [5, 15, 30, 60, 180, 1440]
+const MAX_POLL_OPTIONS = 8
 const THEME_STORAGE_KEY = 'livepoll-theme'
 const POLL_VIEW_STORAGE_KEY = 'livepoll-poll-view'
 
@@ -798,7 +799,8 @@ function App() {
   function addOption() {
     setForm((current) => ({
       ...current,
-      options: current.options.length >= 6 ? current.options : [...current.options, ''],
+      options:
+        current.options.length >= MAX_POLL_OPTIONS ? current.options : [...current.options, ''],
     }))
   }
 
@@ -1006,14 +1008,26 @@ function App() {
                       onChange={(event) => updateOption(index, event.target.value)}
                       placeholder={`Option ${index + 1}`}
                     />
-                    <button className="icon-button" onClick={() => removeOption(index)} type="button">
+                    <button
+                      className="icon-button"
+                      onClick={() => removeOption(index)}
+                      type="button"
+                      disabled={form.options.length <= 2}
+                    >
                       Remove
                     </button>
                   </div>
                 ))}
               </div>
-              <button className="ghost-button" onClick={addOption} type="button">
-                Add option
+              <button
+                className="ghost-button"
+                onClick={addOption}
+                type="button"
+                disabled={form.options.length >= MAX_POLL_OPTIONS}
+              >
+                {form.options.length >= MAX_POLL_OPTIONS
+                  ? 'Maximum options reached'
+                  : `Add option (${form.options.length}/${MAX_POLL_OPTIONS})`}
               </button>
             </div>
 
