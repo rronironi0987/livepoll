@@ -31,6 +31,7 @@ const EMPTY_FORM = {
 
 const DURATION_PRESETS = [5, 15, 30, 60, 180, 1440]
 const THEME_STORAGE_KEY = 'livepoll-theme'
+const POLL_VIEW_STORAGE_KEY = 'livepoll-poll-view'
 
 function getInitialTheme() {
   if (typeof window === 'undefined') {
@@ -51,6 +52,23 @@ function getInitialTheme() {
   }
 
   return 'light'
+}
+
+function getInitialPollView() {
+  if (typeof window === 'undefined') {
+    return 'grid'
+  }
+
+  try {
+    const stored = window.localStorage.getItem(POLL_VIEW_STORAGE_KEY)
+    if (stored === 'grid' || stored === 'list') {
+      return stored
+    }
+  } catch {
+    // Ignore storage failures.
+  }
+
+  return 'grid'
 }
 
 function applyTheme(theme) {
@@ -87,6 +105,34 @@ function ThemeIcon({ theme }) {
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+function ViewIcon({ view }) {
+  if (view === 'list') {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+        <path
+          d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+      <path
+        d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -330,6 +376,7 @@ function App() {
   const [filter, setFilter] = useState('all')
   const [sortBy, setSortBy] = useState('ending-soon')
   const [searchQuery, setSearchQuery] = useState('')
+  const [pollView, setPollView] = useState(getInitialPollView)
   const [form, setForm] = useState(EMPTY_FORM)
   const [formError, setFormError] = useState('')
   const [bootError, setBootError] = useState(null)
@@ -349,6 +396,14 @@ function App() {
   useEffect(() => {
     applyTheme(theme)
   }, [theme])
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(POLL_VIEW_STORAGE_KEY, pollView)
+    } catch {
+      // Ignore storage failures.
+    }
+  }, [pollView])
 
   const selectedPoll = useMemo(
     () => polls.find((poll) => poll.id === selectedPollId) || null,
@@ -1092,6 +1147,27 @@ function App() {
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
               </select>
+
+              <div className="view-toggle" role="group" aria-label="Poll layout">
+                <button
+                  className={pollView === 'grid' ? 'view-toggle-button active' : 'view-toggle-button'}
+                  onClick={() => setPollView('grid')}
+                  type="button"
+                  aria-pressed={pollView === 'grid'}
+                >
+                  <ViewIcon view="grid" />
+                  Grid
+                </button>
+                <button
+                  className={pollView === 'list' ? 'view-toggle-button active' : 'view-toggle-button'}
+                  onClick={() => setPollView('list')}
+                  type="button"
+                  aria-pressed={pollView === 'list'}
+                >
+                  <ViewIcon view="list" />
+                  List
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1106,7 +1182,7 @@ function App() {
               <p>Create the first on-chain poll to start testing real-time voting.</p>
             </div>
           ) : (
-            <div className="poll-grid">
+            <div className={pollView === 'list' ? 'poll-grid list' : 'poll-grid'}>
               {visiblePolls.map((poll) => {
                 const totalVotes = poll.votes.reduce((sum, vote) => sum + vote, 0)
                 const state = getPollState(poll)
