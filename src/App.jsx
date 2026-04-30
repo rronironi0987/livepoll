@@ -699,6 +699,12 @@ function App() {
 
   async function handleCreatePoll() {
     const walletAddress = wallet?.address
+
+    if (!walletAddress) {
+      showNotice('error', 'Wallet required', 'Connect a Stellar wallet before creating a poll.')
+      return
+    }
+
     const question = form.question.trim()
     const options = form.options.map((option) => option.trim()).filter(Boolean)
 
@@ -720,7 +726,7 @@ function App() {
         creator: walletAddress,
         question,
         options,
-        duration_minutes: form.duration,
+        duration_minutes: Number(form.duration),
       },
       'Poll created',
       'Your poll was deployed to the contract and will appear after the next sync.',
