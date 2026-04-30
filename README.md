@@ -2,7 +2,7 @@
 
 LivePoll is a mini end-to-end Stellar + Soroban dApp: a multi-wallet polling app backed by a deployed Soroban smart contract on Stellar Testnet, with real-time contract event sync, transaction progress feedback, basic caching, and a small automated test suite.
 
-## Level 3 Submission Checklist (fill before submitting)
+## Level 3 Submission Checklist 
 
 - Live demo link: https://livepoll-five.vercel.app/
 - Demo video (1 minute) link: https://drive.google.com/file/d/1QPVIvcFsOatJ4D3Uj8UgDZ2ArIPf48I5/view?usp=sharing
