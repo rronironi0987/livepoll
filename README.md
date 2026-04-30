@@ -138,6 +138,7 @@ VITE_POLL_CONTRACT_WASM_URL=/contracts/poll_contract.wasm
 
 This is a standard Vite build.
 
+- Node.js: use Node `^20.19.0` or `>=22.12.0` (required by Vite 8)
 - Build command: `npm run build`
 - Output directory: `dist`
 - Set the env vars from the section above (at minimum `VITE_STELLAR_CONTRACT_ID` if you deploy a new contract)
