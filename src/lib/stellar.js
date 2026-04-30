@@ -52,6 +52,32 @@ export const SUPPORTED_WALLET_NAMES = [
 
 export const server = new rpc.Server(RPC_URL)
 
+function isAccountNotFoundError(error) {
+  const message = String(error?.message || '').toLowerCase()
+
+  return (
+    message.includes('account not found') ||
+    message.includes('resource missing') ||
+    message.includes('not found') ||
+    message.includes('status code 404') ||
+    message.includes('404')
+  )
+}
+
+async function getAccountOrExplain(address) {
+  try {
+    return await server.getAccount(address)
+  } catch (error) {
+    if (isAccountNotFoundError(error)) {
+      throw new Error(
+        `Wallet not funded on Stellar testnet. Fund it via Friendbot then retry: https://friendbot.stellar.org/?addr=${address}`,
+      )
+    }
+
+    throw error
+  }
+}
+
 const walletModules = allowAllModules()
 const freighterModule = walletModules.find((module) => module.productId === FREIGHTER_ID)
 
@@ -212,7 +238,7 @@ export async function ensureReadAccount() {
   const storedAddress = window.localStorage.getItem(READ_ACCOUNT_STORAGE_KEY)
   if (storedAddress) {
     try {
-      await server.getAccount(storedAddress)
+      await getAccountOrExplain(storedAddress)
       return storedAddress
     } catch {
       window.localStorage.removeItem(READ_ACCOUNT_STORAGE_KEY)
@@ -228,7 +254,7 @@ export async function ensureReadAccount() {
 async function buildInvocation({ sourceAddress, method, args = {} }) {
   ensureContractConfigured()
   const spec = await getContractSpec()
-  const account = await server.getAccount(sourceAddress)
+  const account = await getAccountOrExplain(sourceAddress)
   const contract = new Contract(CONTRACT_ID)
   const scArgs = spec.funcArgsToScVals(method, args)
 
